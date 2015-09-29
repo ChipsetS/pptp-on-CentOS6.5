@@ -1,0 +1,82 @@
+#仅适用于pppd -v =2.4.5
+
+modprobe ppp-compress-18 && echo ok
+
+cat /dev/net/tun #如果这条指令显示结果为下面的文本，则表明通过 cat: /dev/net/tun: File descriptor in bad state
+
+yum install -y perl ppp iptables
+
+wget http://www.pipipan.com/file/18457333
+
+rpm -ivh pptpd-1.4.0-1.el6.x86_64.rpm
+
+cp /etc/ppp/options.pptpd /etc/ppp/options.pptpd.bak
+
+vi /etc/ppp/options.pptpd
+
+# 将如下内容添加到到options.pptpd中并保存：
+ms-dns 8.8.8.8
+ms-dns 8.8.4.4
+
+cp /etc/ppp/chap-secrets /etc/ppp/chap-secrets.bak
+
+vi /etc/ppp/chap-secrets
+
+#想用的帐户名 pptpd 想用的密码 *
+
+cp /etc/pptpd.conf /etc/pptpd.conf.bak
+
+vi /etc/pptpd.conf
+
+#添加五行
+#option /etc/ppp/options.pptpd
+#logwtmp
+#localip 192.168.0.10
+#remoteip 192.168.0.11-5
+#（空行）
+#：wq保存
+
+vi /etc/sysctl.conf 
+
+#将net.ipv4.ip_forward = 0 改成 net.ipv4.ip_forward = 1
+#保存修改后的文件
+
+/sbin/sysctl -p
+
+/sbin/service pptpd start 
+
+/sbin/service iptables start 
+
+/sbin/iptables -t nat -A POSTROUTING -o eth0 -s 192.168.0.0/24 -j MASQUERADE
+
+/etc/init.d/iptables save 
+
+/sbin/service iptables restart 
+
+service pptpd restart
+
+chkconfig pptpd on
+
+chkconfig iptables on
+
+#webmin图形管理界面
+
+pm -ivh http://nchc.dl.sourceforge.net/project/webadmin/webmin/1.510/webmin-1.510-1.noarch.rpm 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
