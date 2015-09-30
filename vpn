@@ -14,9 +14,10 @@ cp /etc/ppp/options.pptpd /etc/ppp/options.pptpd.bak
 
 vi /etc/ppp/options.pptpd
 
-# 将如下内容添加到到options.pptpd中并保存：
+# 将如下内容添加到到options.pptpd中：
 ms-dns 8.8.8.8
 ms-dns 8.8.4.4
+:wq保存
 
 cp /etc/ppp/chap-secrets /etc/ppp/chap-secrets.bak
 
@@ -28,7 +29,7 @@ cp /etc/pptpd.conf /etc/pptpd.conf.bak
 
 vi /etc/pptpd.conf
 
-#添加五行
+#添加如下五行内容
 #option /etc/ppp/options.pptpd
 #logwtmp
 #localip 192.168.0.10
